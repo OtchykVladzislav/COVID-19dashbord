@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<head>
+    <title>Dashboard Virus</title>
+    <link rel="stylesheet" href="src/style/style.css">
+</head>
+<body onload="isSaveandWrite()">
+    <header>
+        <div id="imageHeader"></div>
+        <div id="title" >COVID-19 Dashboard</div>
+        <div class="line">
+            <div id="hour"></div>
+            <div>:</div>
+            <div id="min"></div>
+            <div>:</div>
+            <div id="sec"></div>
+        </div>
+    </header>
+    <article>
+        <section>
+            <div>Global Confirmed</div>
+            <div id="total"></div>
+        </section>
+        <section>
+            <div>Confirmed by Country/Region/Sovereignty</div>
+            <div id="listCountries"></div>
+        </section>
+        <div></div>
+    </article>
+    <footer>
+        <div>© Отчик Владислав</div>
+        <div class="line">
+            <div id="day"></div>
+            <div>.</div>
+            <div id="month"></div>
+            <div>.</div>
+            <div id="year"></div>
+        </div>
+        <div>Version 0.0.1</div>
+    </footer>
+    <script src="src/js/logic.js"></script>
+</body>
+</html>
