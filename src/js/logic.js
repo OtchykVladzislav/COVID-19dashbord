@@ -2,6 +2,7 @@ var sortingNumberDeath = 0;
 var sortingNumberConfrimed = 0;
 var sortingNumberRecover = 0; 
 var dateAll;
+var changeDate = 0;
 
 function isSaveandWrite(){
     saveDate()
@@ -22,6 +23,17 @@ document.getElementById("butDeath").addEventListener("click", () => {
 document.getElementById("butRec").addEventListener("click", () => {
     sortingNumberRecover === 0 ? sortingNumberRecover = 1 : sortingNumberRecover = 0
     document.getElementById("listRecover").innerHTML = ""
+    listRecover(dateAll["Countries"])
+})
+
+document.getElementById("changeDate").addEventListener("click", (e) => {
+    changeDate === 0 ? changeDate = 1 : changeDate = 0
+    changeDate === 0 ? e.target.innerHTML = "За последний день" : e.target.innerHTML = "За всё время"
+    document.getElementById("listConfirmed").innerHTML = ""
+    document.getElementById("listDeath").innerHTML = ""
+    document.getElementById("listRecover").innerHTML = ""
+    listConfirmed(dateAll["Countries"])
+    listDeath(dateAll["Countries"])
     listRecover(dateAll["Countries"])
 })
 
@@ -62,9 +74,11 @@ function createBlockRecover(div, number, country) {
 function listConfirmed(elements){
     let listBlock = document.getElementById("listConfirmed")
     let sortArr;
-    sortingNumberConfrimed === 0 ? sortArr = sortDescending(elements, "TotalConfirmed") : sortArr = sortGrowth(elements, "TotalConfirmed")
+    let str;
+    changeDate === 0 ? str = "TotalConfirmed" : str = "NewConfirmed"
+    sortingNumberConfrimed === 0 ? sortArr = sortDescending(elements, str) : sortArr = sortGrowth(elements, str)
     for(let i = 0; i < sortArr.length; i++){
-        createBlockConfirmed(listBlock, sortArr[i]["TotalConfirmed"], sortArr[i]["Country"])
+        createBlockConfirmed(listBlock, sortArr[i][str], sortArr[i]["Country"])
         listBlock.appendChild(document.createElement("hr"))
     }
 }
@@ -72,9 +86,11 @@ function listConfirmed(elements){
 function listDeath(elements){
     let listBlock = document.getElementById("listDeath")
     let sortArr;
-    sortingNumberDeath === 0 ? sortArr= sortDescending(elements, "TotalDeaths") : sortArr = sortGrowth(elements, "TotalDeaths")
+    let str;
+    changeDate === 0 ? str = "TotalDeaths" : str = "NewDeaths"
+    sortingNumberDeath === 0 ? sortArr= sortDescending(elements, str) : sortArr = sortGrowth(elements, str)
     for(let i = 0; i < sortArr.length; i++){
-        createBlockDeath(listBlock, sortArr[i]["TotalDeaths"], sortArr[i]["Country"])
+        createBlockDeath(listBlock, sortArr[i][str], sortArr[i]["Country"])
         listBlock.appendChild(document.createElement("hr"))
     }
 }
@@ -82,9 +98,11 @@ function listDeath(elements){
 function listRecover(elements){
     let listBlock = document.getElementById("listRecover")
     let sortArr;
-    sortingNumberDeath === 0 ? sortArr = sortDescending(elements, "TotalRecovered") : sortArr = sortGrowth(elements, "TotalRecovered")
+    let str;
+    changeDate === 0 ? str = "TotalRecovered" : str = "NewRecovered"
+    sortingNumberDeath === 0 ? sortArr = sortDescending(elements, str) : sortArr = sortGrowth(elements, str)
     for(let i = 0; i < sortArr.length; i++){
-        createBlockRecover(listBlock, sortArr[i]["TotalRecovered"], sortArr[i]["Country"])
+        createBlockRecover(listBlock, sortArr[i][str], sortArr[i]["Country"])
         listBlock.appendChild(document.createElement("hr"))
     }
 }
@@ -101,7 +119,7 @@ function saveDate(){
     .then(response => response.json())
     .then(response => {
         dateAll = response
-        let date = new Date(`${response["Countries"][0]["Date"]}`)
+        let date = new Date(`${response["Global"]["Date"]}`)
         document.getElementById("time").innerText = date.toLocaleString()
         textResult(response["Global"]["TotalConfirmed"],response["Global"]["TotalDeaths"],response["Global"]["TotalRecovered"])
         listConfirmed(response["Countries"])

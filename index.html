@@ -2,6 +2,7 @@
 <head>
     <title>Dashboard Virus</title>
     <link rel="stylesheet" href="src/style/style.css">
+    <script src="https://cdn.zingchart.com/zingchart.min.js"></script>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
 <body onload="isSaveandWrite()">
@@ -20,6 +21,9 @@
         <section id="updateDate">
             <div>Время обновления данных</div>
             <div id="time"></div>
+        </section>
+        <section>
+            <div class="button" id="changeDate">За последний день</div>
         </section>
         <section id="totalDate">
             <div>
@@ -52,6 +56,10 @@
                     <div class="list" id="listRecover"></div>
                 </div>
             </div>
+        </section>
+        <section>
+            <div id="interMap"></div>
+            <div id="graphVirus"></div>
         </section>
     </article>
     <footer>

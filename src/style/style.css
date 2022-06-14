@@ -95,7 +95,14 @@ article #totalDate{
     overflow-y: auto;
 }
 
-.buttonSort{
+#changeDate{
+    border-radius: 5px;
+    padding: 10px;
+    font-size: 22px;
+}
+
+
+.buttonSort, .button{
     margin: 10px;
     border: 2px solid red;
     padding: 7px;
@@ -103,6 +110,11 @@ article #totalDate{
     background: white;
     color: black;
     font-weight: bolder;
+}
+
+.button:hover{
+    background: black;
+    color: white;
 }
 
 .buttonSort:hover{
