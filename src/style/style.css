@@ -48,7 +48,15 @@ header{
     }
 }
 
-article section{
+article{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+}
+
+article section .blockTotal{
     margin: 10px;
     width: max-content;
     height: max-content;
@@ -60,35 +68,79 @@ article section{
     text-align: center;
 }
 
-#listCountries{
+#updateDate{
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    margin: 10px;
+    width: max-content;
+    height: max-content;
+    border: 2px solid red;
+    border-radius: 5px;
+    padding: 20px;
+    font-size: 20px;
+    color: white;
+}
+
+article #totalDate{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    flex-wrap: wrap;
+}
+
+.list{
     margin: 10px 0 0 0;
     height: 400px;
     overflow-y: auto;
 }
 
-#listCountries::-webkit-scrollbar-track {
+.buttonSort{
+    margin: 10px;
+    border: 2px solid red;
+    padding: 7px;
+    font-size: 20px;
+    background: white;
+    color: black;
+    font-weight: bolder;
+}
+
+.buttonSort:hover{
+    background: black;
+    color: white;
+}
+
+.list::-webkit-scrollbar-track {
     background-color: #A9A9A9;
 }
 
-#listCountries::-webkit-scrollbar {
+.list::-webkit-scrollbar {
     width: 12px;
     margin: 0 0 0 10px
 } 
 
-#listCountries::-webkit-scrollbar-thumb {
+.list::-webkit-scrollbar-thumb {
     background: #808080;
 }
+
+
+#total{
+    color: red;
+}
+
 
 .numberCountry{
     color: red;
 }
 
-.lineConfirmed{
+.lineConfirmed,.lineDeath,.lineRecover{
     display: flex;
     flex-direction: row;
     justify-content: space-between;
     margin: 10px;
+    font-size: 18px;
 }
+
 
 footer{
     margin: 10px 0 0 0;

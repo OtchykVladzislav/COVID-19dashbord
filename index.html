@@ -2,6 +2,7 @@
 <head>
     <title>Dashboard Virus</title>
     <link rel="stylesheet" href="src/style/style.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
 <body onload="isSaveandWrite()">
     <header>
@@ -16,15 +17,42 @@
         </div>
     </header>
     <article>
-        <section>
-            <div>Global Confirmed</div>
-            <div id="total"></div>
+        <section id="updateDate">
+            <div>Время обновления данных</div>
+            <div id="time"></div>
         </section>
-        <section>
-            <div>Confirmed by Country/Region/Sovereignty</div>
-            <div id="listCountries"></div>
+        <section id="totalDate">
+            <div>
+                <div class="blockTotal">
+                    <div>Global Confirmed</div>
+                    <div id="totalConfirmed"></div>
+                </div>
+                <div class="blockTotal">
+                    <div>Confirmed by Country/Region/Sovereignty<span class="buttonSort" id="butConf">&#8645;</span></div>
+                    <div class="list" id="listConfirmed"></div>
+                </div>
+            </div>
+            <div>
+                <div class="blockTotal">
+                    <div>Global Death</div>
+                    <div id="totalDeath"></div>
+                </div>
+                <div class="blockTotal">
+                    <div>Deaths by Country/Region/Sovereignty<span class="buttonSort" id="butDeath">&#8645;</span></div>
+                    <div class="list" id="listDeath"></div>
+                </div>
+            </div>
+            <div>
+                <div class="blockTotal">
+                    <div>Global Recovered</div>
+                    <div id="totalRecover"></div>
+                </div>
+                <div class="blockTotal">
+                    <div>Recovered by Country/Region/Sovereignty<span class="buttonSort" id="butRec">&#8645;</span></div>
+                    <div class="list" id="listRecover"></div>
+                </div>
+            </div>
         </section>
-        <div></div>
     </article>
     <footer>
         <div>© Отчик Владислав</div>
