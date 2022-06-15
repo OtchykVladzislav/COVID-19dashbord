@@ -5,10 +5,13 @@
     <script src="https://cdn.zingchart.com/zingchart.min.js"></script>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
-<body onload="isSaveandWrite()">
-    <header>
-        <div id="imageHeader"></div>
-        <div id="title" >COVID-19 Dashboard</div>
+<body id="main" onload="isSaveandWrite()">
+    <header id="head">
+        <div id="infoSite">
+            <div class="imageHeader" id="logo"></div>
+            <div id="title" >COVID-19 Dashboard</div>
+        </div>
+        <input id="search" type="text" placeholder="Search....">
         <div class="line">
             <div id="hour"></div>
             <div>:</div>
@@ -16,16 +19,22 @@
             <div>:</div>
             <div id="sec"></div>
         </div>
+        <div class="dropdown">
+            <div class="dropbtn" id="butMenu">&#9776;</div>
+            <div class="dropdown-content" id="contentMenu">
+                <div id="changeTheme">Сменить тему</div>
+            </div>
+          </div>
     </header>
     <article>
-        <section id="updateDate">
+        <section id="updateDate" class="conteiner">
             <div>Время обновления данных</div>
             <div id="time"></div>
         </section>
         <section>
             <div class="button" id="changeDate">За последний день</div>
         </section>
-        <section id="totalDate">
+        <section id="totalDate" class="conteiner">
             <div>
                 <div class="blockTotal">
                     <div>Global Confirmed</div>
@@ -62,7 +71,7 @@
             <div id="graphVirus"></div>
         </section>
     </article>
-    <footer>
+    <footer id="foot">
         <div>© Отчик Владислав</div>
         <div class="line">
             <div id="day"></div>

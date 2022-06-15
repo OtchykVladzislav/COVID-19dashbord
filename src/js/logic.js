@@ -8,34 +8,50 @@ function isSaveandWrite(){
     saveDate()
 }
 
+document.getElementById("changeTheme").addEventListener("click", () => {
+    document.getElementById("main").classList.toggle("bodyTheme")
+    document.getElementById("head").classList.toggle("blockTheme")
+    document.getElementById("foot").classList.toggle("blockTheme")
+    document.getElementById("logo").classList.toggle("imageTheme")
+    document.getElementById("updateDate").classList.toggle("dateTheme")
+    document.getElementById("totalDate").classList.toggle("dateTheme")
+    document.getElementById("butMenu").classList.toggle("buttonTheme")
+    document.getElementById("contentMenu").classList.toggle("contMenu")
+})
+
 document.getElementById("butConf").addEventListener("click", () => {
     sortingNumberConfrimed === 0 ? sortingNumberConfrimed = 1 : sortingNumberConfrimed = 0
-    document.getElementById("listConfirmed").innerHTML = ""
     listConfirmed(dateAll["Countries"])
 })
 
 document.getElementById("butDeath").addEventListener("click", () => {
     sortingNumberDeath === 0 ? sortingNumberDeath = 1 : sortingNumberDeath = 0
-    document.getElementById("listDeath").innerHTML = ""
     listDeath(dateAll["Countries"])
 })
 
 document.getElementById("butRec").addEventListener("click", () => {
     sortingNumberRecover === 0 ? sortingNumberRecover = 1 : sortingNumberRecover = 0
-    document.getElementById("listRecover").innerHTML = ""
     listRecover(dateAll["Countries"])
 })
 
 document.getElementById("changeDate").addEventListener("click", (e) => {
     changeDate === 0 ? changeDate = 1 : changeDate = 0
     changeDate === 0 ? e.target.innerHTML = "За последний день" : e.target.innerHTML = "За всё время"
-    document.getElementById("listConfirmed").innerHTML = ""
-    document.getElementById("listDeath").innerHTML = ""
-    document.getElementById("listRecover").innerHTML = ""
     listConfirmed(dateAll["Countries"])
     listDeath(dateAll["Countries"])
     listRecover(dateAll["Countries"])
 })
+
+document.getElementById("search").addEventListener("input", (e) => {
+    listConfirmed(nameSearch(e.target.value))
+    listDeath(nameSearch(e.target.value))
+    listRecover(nameSearch(e.target.value))
+})
+
+function nameSearch(elements){
+    return dateAll["Countries"].filter(item => item["Country"].toLowerCase().includes(elements.toLowerCase()))
+}
+
 
 function sortDescending(elements, str) {
     return elements.sort((a, b) => b[str] - a[str])
@@ -47,6 +63,45 @@ function sortGrowth(elements, str){
 
 function converterNumbers(string){
     return (parseInt(+string)).toLocaleString('ru-Ru')
+}
+
+function listConfirmed(elements){
+    let listBlock = document.getElementById("listConfirmed")
+    let sortArr;
+    let str;
+    document.getElementById("listConfirmed").innerHTML = ""
+    changeDate === 0 ? str = "TotalConfirmed" : str = "NewConfirmed"
+    sortingNumberConfrimed === 0 ? sortArr = sortDescending(elements, str) : sortArr = sortGrowth(elements, str)
+    for(let i = 0; i < sortArr.length; i++){
+        createBlockConfirmed(listBlock, sortArr[i][str], sortArr[i]["Country"])
+        listBlock.appendChild(document.createElement("hr"))
+    }
+}
+
+function listDeath(elements){
+    let listBlock = document.getElementById("listDeath")
+    let sortArr;
+    let str;
+    document.getElementById("listDeath").innerHTML = ""
+    changeDate === 0 ? str = "TotalDeaths" : str = "NewDeaths"
+    sortingNumberDeath === 0 ? sortArr= sortDescending(elements, str) : sortArr = sortGrowth(elements, str)
+    for(let i = 0; i < sortArr.length; i++){
+        createBlockDeath(listBlock, sortArr[i][str], sortArr[i]["Country"])
+        listBlock.appendChild(document.createElement("hr"))
+    }
+}
+
+function listRecover(elements){
+    let listBlock = document.getElementById("listRecover")
+    let sortArr;
+    let str;
+    document.getElementById("listRecover").innerHTML = ""
+    changeDate === 0 ? str = "TotalRecovered" : str = "NewRecovered"
+    sortingNumberDeath === 0 ? sortArr = sortDescending(elements, str) : sortArr = sortGrowth(elements, str)
+    for(let i = 0; i < sortArr.length; i++){
+        createBlockRecover(listBlock, sortArr[i][str], sortArr[i]["Country"])
+        listBlock.appendChild(document.createElement("hr"))
+    }
 }
 
 function createBlockConfirmed(div, number, country) {
@@ -68,43 +123,6 @@ function createBlockRecover(div, number, country) {
     line.className = "lineRecover"
     line.innerHTML= `<span class="numberCountry">${converterNumbers(number)}</span><span class="nameCountry">${country}</span>`
     div.appendChild(line)
-}
-
-
-function listConfirmed(elements){
-    let listBlock = document.getElementById("listConfirmed")
-    let sortArr;
-    let str;
-    changeDate === 0 ? str = "TotalConfirmed" : str = "NewConfirmed"
-    sortingNumberConfrimed === 0 ? sortArr = sortDescending(elements, str) : sortArr = sortGrowth(elements, str)
-    for(let i = 0; i < sortArr.length; i++){
-        createBlockConfirmed(listBlock, sortArr[i][str], sortArr[i]["Country"])
-        listBlock.appendChild(document.createElement("hr"))
-    }
-}
-
-function listDeath(elements){
-    let listBlock = document.getElementById("listDeath")
-    let sortArr;
-    let str;
-    changeDate === 0 ? str = "TotalDeaths" : str = "NewDeaths"
-    sortingNumberDeath === 0 ? sortArr= sortDescending(elements, str) : sortArr = sortGrowth(elements, str)
-    for(let i = 0; i < sortArr.length; i++){
-        createBlockDeath(listBlock, sortArr[i][str], sortArr[i]["Country"])
-        listBlock.appendChild(document.createElement("hr"))
-    }
-}
-
-function listRecover(elements){
-    let listBlock = document.getElementById("listRecover")
-    let sortArr;
-    let str;
-    changeDate === 0 ? str = "TotalRecovered" : str = "NewRecovered"
-    sortingNumberDeath === 0 ? sortArr = sortDescending(elements, str) : sortArr = sortGrowth(elements, str)
-    for(let i = 0; i < sortArr.length; i++){
-        createBlockRecover(listBlock, sortArr[i][str], sortArr[i]["Country"])
-        listBlock.appendChild(document.createElement("hr"))
-    }
 }
 
 function textResult(a,b,c){

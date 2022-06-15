@@ -13,11 +13,65 @@ header{
     margin: 0 0 10px 0;
     display: flex;
     flex-direction: row;
-    justify-content: space-between;
+    justify-content: space-around;
     flex-wrap: wrap;
     align-items: center;
     background: white;
     padding: 10px;
+}
+
+#search{
+    width: 300px;
+    height: 30px;
+    font-weight: bold;
+    font-size: 17px;
+}
+
+#infoSite{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.dropbtn {
+    background-color: white;
+    color: black;
+    padding: 10px;
+    font-size: 25px;
+    border: none;
+    font-weight: bolder;
+}
+
+.dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background: #f1f1f1;
+    z-index: 1;
+    width: 180px;
+    font-size: 20px;
+}
+
+.dropdown-content div{
+    padding: 12px 16px;
+    display: block;
+}
+
+.dropdown:hover .dropdown-content {
+    display: block;
+}
+
+.dropbtn:hover{
+    background: black;
+    color: white;
+}
+
+.dropdown-content div:hover {
+    background-color: #ddd;
 }
 
 #title{
@@ -27,10 +81,10 @@ header{
 .line{
     display: flex;
     flex-direction: row;
-    font-size: 25px;
+    font-size: 22px;
 }
 
-#imageHeader{
+.imageHeader{
     background-image: url("../images/Black.jpg");
     background-size: contain;
     width: 80px;
@@ -64,7 +118,6 @@ article section .blockTotal{
     border-radius: 5px;
     padding: 20px;
     font-size: 20px;
-    color: white;
     text-align: center;
 }
 
@@ -79,6 +132,9 @@ article section .blockTotal{
     border-radius: 5px;
     padding: 20px;
     font-size: 20px;
+}
+
+.conteiner{
     color: white;
 }
 
@@ -91,7 +147,7 @@ article #totalDate{
 
 .list{
     margin: 10px 0 0 0;
-    height: 400px;
+    max-height: 400px;
     overflow-y: auto;
 }
 
@@ -112,12 +168,7 @@ article #totalDate{
     font-weight: bolder;
 }
 
-.button:hover{
-    background: black;
-    color: white;
-}
-
-.buttonSort:hover{
+.button:hover, .buttonSort:hover{
     background: black;
     color: white;
 }
@@ -136,7 +187,7 @@ article #totalDate{
 }
 
 
-#total{
+#totalConfirmed, #totalDeath, #totalRecover{
     color: red;
 }
 
@@ -166,7 +217,36 @@ footer{
     padding: 20px;
 }
 
+/*Тема*/
 
+.blockTheme{
+    background: black;
+    color: white;
+}
 
+.dateTheme{
+    color: black;
+}
 
+.buttonTheme{
+    background: black;
+    color: white;
+}
 
+.buttonTheme:hover{
+    background: white;
+    color: black;
+}
+
+.contMenu{
+    background: black;
+}
+
+.bodyTheme{
+    background:white;
+    color: black;
+}
+
+.imageTheme{
+    background-image: url("../images/White.jpg");
+}
