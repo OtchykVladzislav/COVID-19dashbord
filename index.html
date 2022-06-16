@@ -2,7 +2,6 @@
 <head>
     <title>Dashboard Virus</title>
     <link rel="stylesheet" href="src/style/style.css">
-    <script src="https://cdn.zingchart.com/zingchart.min.js"></script>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
 <body id="main" onload="isSaveandWrite()">
@@ -68,7 +67,10 @@
         </section>
         <section>
             <div id="interMap"></div>
-            <div id="graphVirus"></div>
+            <div id="graphVirus">
+                <h1 style="color:white; text-align:center">Graphic COVID-19</h1>
+                <canvas id="myChart" width="800px" height="400px"></canvas>
+            </div>
         </section>
     </article>
     <footer id="foot">
@@ -82,6 +84,8 @@
         </div>
         <div>Version 0.0.1</div>
     </footer>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@3.8.0/dist/chart.min.js"></script>
     <script src="src/js/logic.js"></script>
+    <script src="src/js/graphic.js"></script>
 </body>
 </html>
