@@ -1,16 +1,15 @@
 var sortingNumberDeath = 0;
 var sortingNumberConfrimed = 0;
 var sortingNumberRecover = 0; 
-var dateAll;
+var dataAll;
 var changeDate = 0;
 var countryName;
   
-
-
 function isSaveandWrite(){
     saveDate()
-    saveGlobalDate()
-    drawMap()
+    saveGlobalData()
+    saveDataMap()
+    saveDataTotal()
 }
 
 //html logic
@@ -30,35 +29,35 @@ document.getElementById("changeTheme").addEventListener("click", () => {
 
 document.getElementById("butConf").addEventListener("click", () => {
     sortingNumberConfrimed === 0 ? sortingNumberConfrimed = 1 : sortingNumberConfrimed = 0
-    listCreate(dateAll["Countries"], "listConfirmed", "TotalConfirmed", "NewConfirmed", "lineConfirmed", sortingNumberConfrimed)
+    listCreate(dataAll, "listConfirmed", "cases", "todayCases", "lineConfirmed", sortingNumberConfrimed)
 })
 
 document.getElementById("butDeath").addEventListener("click", () => {
     sortingNumberDeath === 0 ? sortingNumberDeath = 1 : sortingNumberDeath = 0
-    listCreate(dateAll["Countries"], "listDeath", "TotalDeaths", "NewDeaths", "lineDeath", sortingNumberDeath)
+    listCreate(dataAll, "listDeath", "deaths", "todayDeaths", "lineDeath", sortingNumberDeath)
 })
 
 document.getElementById("butRec").addEventListener("click", () => {
     sortingNumberRecover === 0 ? sortingNumberRecover = 1 : sortingNumberRecover = 0
-    listCreate(dateAll["Countries"], "listRecover", "TotalRecovered", "NewRecovered", "lineRecover", sortingNumberRecover)
+    listCreate(dataAll, "listRecover", "recovered", "todayRecovered", "lineRecover", sortingNumberRecover)
 })
 
 document.getElementById("changeDate").addEventListener("click", (e) => {
     changeDate === 0 ? changeDate = 1 : changeDate = 0
     changeDate === 0 ? e.target.innerHTML = "Last day" : e.target.innerHTML = "All time"
-    listCreate(dateAll["Countries"], "listConfirmed", "TotalConfirmed", "NewConfirmed", "lineConfirmed", sortingNumberConfrimed)
-    listCreate(dateAll["Countries"], "listDeath", "TotalDeaths", "NewDeaths", "lineDeath", sortingNumberDeath)
-    listCreate(dateAll["Countries"], "listRecover", "TotalRecovered", "NewRecovered", "lineRecover", sortingNumberRecover)
+    listCreate(dataAll, "listConfirmed", "cases", "todayCases", "lineConfirmed", sortingNumberConfrimed)
+    listCreate(dataAll, "listDeath", "deaths", "todayDeaths", "lineDeath", sortingNumberDeath)
+    listCreate(dataAll, "listRecover", "recovered", "todayRecovered", "lineRecover", sortingNumberRecover)
 })
 
 document.getElementById("search").addEventListener("input", (e) => {
-    listCreate(nameSearch(e.target.value), "listConfirmed", "TotalConfirmed", "NewConfirmed", "lineConfirmed", sortingNumberConfrimed)
-    listCreate(nameSearch(e.target.value), "listDeath", "TotalDeaths", "NewDeaths", "lineDeath", sortingNumberDeath)
-    listCreate(nameSearch(e.target.value), "listRecover", "TotalRecovered", "NewRecovered", "lineRecover", sortingNumberRecover)
+    listCreate(nameSearch(e.target.value), "listConfirmed", "cases", "todayCases", "lineConfirmed", sortingNumberConfrimed)
+    listCreate(nameSearch(e.target.value), "listDeath", "deaths", "todayDeaths", "lineDeath", sortingNumberDeath)
+    listCreate(nameSearch(e.target.value), "listRecover", "recovered", "todayRecovered", "lineRecover", sortingNumberRecover)
 })
 
 document.getElementById("selectCountry").addEventListener("change", (e) => {
-    saveCountryDate(e.target.value)
+    saveCountryData(e.target.value)
     document.getElementById("graphCountry").style.display = "none"
     document.getElementById("graphCountry").style.display = "flex"
 })
@@ -66,7 +65,7 @@ document.getElementById("selectCountry").addEventListener("change", (e) => {
 // Main logic
 
 function nameSearch(elements){
-    return dateAll["Countries"].filter(item => item["Country"].toLowerCase().includes(elements.toLowerCase()))
+    return dataAll.filter(item => item["country"].toLowerCase().includes(elements.toLowerCase()))
 }
 
 function sortDescending(elements, str) {
@@ -81,16 +80,6 @@ function converterNumbers(string){
     return (parseInt(+string)).toLocaleString('ru-Ru')
 }
 
-function searchCountryName(array) {
-    return array.map((item, index, arr) => {
-        for (let i = 0; i < dateAll["Countries"].length; i++) {
-            if(item["Country"] === dateAll["Countries"][i]["Country"]){
-                arr.splice(index, 1)
-            }
-        }
-    })
-}
-
 //Create Block
 
 function listCreate(elements, div, total, totalDay, line, param){
@@ -101,7 +90,7 @@ function listCreate(elements, div, total, totalDay, line, param){
     changeDate === 0 ? str = total : str = totalDay
     param === 0 ? sortArr = sortDescending(elements, str) : sortArr = sortGrowth(elements, str)
     for(let i = 0; i < sortArr.length; i++){
-        createBlock(listBlock, sortArr[i][str], sortArr[i]["Country"], line)
+        createBlock(listBlock, sortArr[i][str], sortArr[i]["country"], line)
         listBlock.appendChild(document.createElement("hr"))
     }
 }
@@ -149,7 +138,7 @@ function createOption(div, name, value) {
 
 //fetch func
 
-function saveGlobalDate(){
+function saveGlobalData(){
     fetch("https://api.covid19api.com/world?from=2022-05-01T00:00:00Z&to=2022-06-01T00:00:00Z")
     .then(response => response.json())
     .then(response => {
@@ -165,7 +154,7 @@ function saveGlobalDate(){
     })
 }
 
-function saveCountryDate(address){
+function saveCountryData(address){
     fetch(`https://api.covid19api.com/total/country/${address}?from=2022-05-01T00:00:00Z&to=2022-06-01T00:00:00Z`)
     .then(response => response.json())
     .then(response => {
@@ -184,13 +173,8 @@ function saveDate(){
     fetch("https://api.covid19api.com/summary")
     .then(response => response.json())
     .then(response => {
-        dateAll = response
         let date = new Date(`${response["Global"]["Date"]}`)
         document.getElementById("time").innerText = date.toLocaleString()
-        textResult(response["Global"]["TotalConfirmed"],response["Global"]["TotalDeaths"],response["Global"]["TotalRecovered"])
-        listCreate(response["Countries"], "listConfirmed", "TotalConfirmed", "NewConfirmed", "lineConfirmed", sortingNumberConfrimed)
-        listCreate(response["Countries"], "listDeath", "TotalDeaths", "NewDeaths", "lineDeath", sortingNumberDeath)
-        listCreate(response["Countries"], "listRecover", "TotalRecovered", "NewRecovered", "lineRecover", sortingNumberRecover)
         createSelect(response["Countries"])
     })
     .catch(error => {
@@ -198,18 +182,26 @@ function saveDate(){
     })
 }
 
-function saveDate(){
-    fetch("https://api.covid19api.com/summary")
+function saveDataTotal() {
+    fetch("https://disease.sh/v3/covid-19/all")
     .then(response => response.json())
     .then(response => {
-        dateAll = response
-        let date = new Date(`${response["Global"]["Date"]}`)
-        document.getElementById("time").innerText = date.toLocaleString()
-        textResult(response["Global"]["TotalConfirmed"],response["Global"]["TotalDeaths"],response["Global"]["TotalRecovered"])
-        listCreate(response["Countries"], "listConfirmed", "TotalConfirmed", "NewConfirmed", "lineConfirmed", sortingNumberConfrimed)
-        listCreate(response["Countries"], "listDeath", "TotalDeaths", "NewDeaths", "lineDeath", sortingNumberDeath)
-        listCreate(response["Countries"], "listRecover", "TotalRecovered", "NewRecovered", "lineRecover", sortingNumberRecover)
-        createSelect(response["Countries"])
+        textResult(response["cases"],response["deaths"],response["recovered"])
+    })
+    .catch(error => {
+        console.log(error)
+    })
+}
+
+function saveDataMap(){
+    fetch("https://disease.sh/v3/covid-19/countries/")
+    .then(response => response.json())
+    .then(response => {
+        dataAll = response
+        listCreate(response, "listConfirmed", "cases", "todayCases", "lineConfirmed", sortingNumberConfrimed)
+        listCreate(response, "listDeath", "deaths", "todayDeaths", "lineDeath", sortingNumberDeath)
+        listCreate(response, "listRecover", "recovered", "todayRecovered", "lineRecover", sortingNumberRecover)
+        drawMap(response)
     })
     .catch(error => {
         console.log(error)
