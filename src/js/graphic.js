@@ -1,7 +1,7 @@
-var ctx = document.getElementById('myChart').getContext('2d');
+let countryChart = null;
 
-function graphicDraw(elemOne, elemTwo, elemThree, time) {
-    let myChart = new Chart(ctx, {
+function drawGraphic(elemOne, elemTwo, elemThree, time) {
+    return {
         type: 'line',
         data: {
             labels: time,
@@ -45,5 +45,18 @@ function graphicDraw(elemOne, elemTwo, elemThree, time) {
                 }
             }
         }
-    })   
+    }
+}
+
+
+function graphicAllDraw(div, elemOne, elemTwo, elemThree, time) {
+    return new Chart(document.getElementById(div), drawGraphic(elemOne, elemTwo, elemThree, time))
+}
+
+function graphicCountryDraw(div, elemOne, elemTwo, elemThree, time) {
+    if(countryChart != null){
+        countryChart.destroy()
+    }
+
+    countryChart = new Chart(document.getElementById(div), drawGraphic(elemOne, elemTwo, elemThree, time))
 }

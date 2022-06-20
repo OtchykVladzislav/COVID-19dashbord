@@ -3,11 +3,17 @@ var sortingNumberConfrimed = 0;
 var sortingNumberRecover = 0; 
 var dateAll;
 var changeDate = 0;
+var countryName;
+  
+
 
 function isSaveandWrite(){
     saveDate()
-    saveTotalDate()
+    saveGlobalDate()
+    drawMap()
 }
+
+//html logic
 
 document.getElementById("changeTheme").addEventListener("click", () => {
     document.getElementById("main").classList.toggle("bodyTheme")
@@ -16,6 +22,8 @@ document.getElementById("changeTheme").addEventListener("click", () => {
     document.getElementById("logo").classList.toggle("imageTheme")
     document.getElementById("updateDate").classList.toggle("dateTheme")
     document.getElementById("totalDate").classList.toggle("dateTheme")
+    document.getElementById("graphVirus").classList.toggle("dateTheme")
+    document.getElementById("mapSection").classList.toggle("dateTheme")
     document.getElementById("butMenu").classList.toggle("buttonTheme")
     document.getElementById("contentMenu").classList.toggle("contMenu")
 })
@@ -37,7 +45,7 @@ document.getElementById("butRec").addEventListener("click", () => {
 
 document.getElementById("changeDate").addEventListener("click", (e) => {
     changeDate === 0 ? changeDate = 1 : changeDate = 0
-    changeDate === 0 ? e.target.innerHTML = "За последний день" : e.target.innerHTML = "За всё время"
+    changeDate === 0 ? e.target.innerHTML = "Last day" : e.target.innerHTML = "All time"
     listCreate(dateAll["Countries"], "listConfirmed", "TotalConfirmed", "NewConfirmed", "lineConfirmed", sortingNumberConfrimed)
     listCreate(dateAll["Countries"], "listDeath", "TotalDeaths", "NewDeaths", "lineDeath", sortingNumberDeath)
     listCreate(dateAll["Countries"], "listRecover", "TotalRecovered", "NewRecovered", "lineRecover", sortingNumberRecover)
@@ -49,10 +57,17 @@ document.getElementById("search").addEventListener("input", (e) => {
     listCreate(nameSearch(e.target.value), "listRecover", "TotalRecovered", "NewRecovered", "lineRecover", sortingNumberRecover)
 })
 
+document.getElementById("selectCountry").addEventListener("change", (e) => {
+    saveCountryDate(e.target.value)
+    document.getElementById("graphCountry").style.display = "none"
+    document.getElementById("graphCountry").style.display = "flex"
+})
+
+// Main logic
+
 function nameSearch(elements){
     return dateAll["Countries"].filter(item => item["Country"].toLowerCase().includes(elements.toLowerCase()))
 }
-
 
 function sortDescending(elements, str) {
     return elements.sort((a, b) => b[str] - a[str])
@@ -65,6 +80,18 @@ function sortGrowth(elements, str){
 function converterNumbers(string){
     return (parseInt(+string)).toLocaleString('ru-Ru')
 }
+
+function searchCountryName(array) {
+    return array.map((item, index, arr) => {
+        for (let i = 0; i < dateAll["Countries"].length; i++) {
+            if(item["Country"] === dateAll["Countries"][i]["Country"]){
+                arr.splice(index, 1)
+            }
+        }
+    })
+}
+
+//Create Block
 
 function listCreate(elements, div, total, totalDay, line, param){
     let listBlock = document.getElementById(div)
@@ -106,8 +133,24 @@ function textResult(a,b,c){
     document.getElementById("totalRecover").innerText = converterNumbers(c)
 }
 
-async function saveTotalDate(){
-    await fetch("https://api.covid19api.com/world?from=2022-04-01T00:00:00Z&to=2022-05-01T00:00:00Z")
+function createSelect(arr){
+    let div = document.getElementById("selectCountry")
+    for(let i = 0; i < arr.length; i++){
+        createOption(div, arr[i]["Country"], arr[i]["Slug"])
+    }
+}
+
+function createOption(div, name, value) {
+    let option = document.createElement("option")
+    option.value = value
+    option.innerText = name
+    div.appendChild(option)
+}
+
+//fetch func
+
+function saveGlobalDate(){
+    fetch("https://api.covid19api.com/world?from=2022-05-01T00:00:00Z&to=2022-06-01T00:00:00Z")
     .then(response => response.json())
     .then(response => {
         let dateTotal = sortGrowth(response, "TotalConfirmed")
@@ -115,13 +158,27 @@ async function saveTotalDate(){
         let conf = convertArray(dateTotal, "TotalConfirmed", "number")
         let death = convertArray(dateTotal, "TotalDeaths", "number")
         let rec = convertArray(dateTotal, "TotalRecovered", "number")
-        graphicDraw(conf, death, rec, time)
+        graphicAllDraw("graphGlobal", conf, death, rec, time)
     })
     .catch(error => {
         console.log(error)
     })
 }
 
+function saveCountryDate(address){
+    fetch(`https://api.covid19api.com/total/country/${address}?from=2022-05-01T00:00:00Z&to=2022-06-01T00:00:00Z`)
+    .then(response => response.json())
+    .then(response => {
+        let time = convertArray(response, "Date", "time")
+        let conf = convertArray(response, "Confirmed", "number")
+        let death = convertArray(response, "Deaths", "number")
+        let rec = convertArray(response, "Recovered", "number")
+        graphicCountryDraw("graphCountry", conf, death, rec, time).update()
+    })
+    .catch(error => {
+        console.log(error)
+    })
+}
 
 function saveDate(){
     fetch("https://api.covid19api.com/summary")
@@ -134,11 +191,33 @@ function saveDate(){
         listCreate(response["Countries"], "listConfirmed", "TotalConfirmed", "NewConfirmed", "lineConfirmed", sortingNumberConfrimed)
         listCreate(response["Countries"], "listDeath", "TotalDeaths", "NewDeaths", "lineDeath", sortingNumberDeath)
         listCreate(response["Countries"], "listRecover", "TotalRecovered", "NewRecovered", "lineRecover", sortingNumberRecover)
+        createSelect(response["Countries"])
     })
     .catch(error => {
         console.log(error)
     })
 }
+
+function saveDate(){
+    fetch("https://api.covid19api.com/summary")
+    .then(response => response.json())
+    .then(response => {
+        dateAll = response
+        let date = new Date(`${response["Global"]["Date"]}`)
+        document.getElementById("time").innerText = date.toLocaleString()
+        textResult(response["Global"]["TotalConfirmed"],response["Global"]["TotalDeaths"],response["Global"]["TotalRecovered"])
+        listCreate(response["Countries"], "listConfirmed", "TotalConfirmed", "NewConfirmed", "lineConfirmed", sortingNumberConfrimed)
+        listCreate(response["Countries"], "listDeath", "TotalDeaths", "NewDeaths", "lineDeath", sortingNumberDeath)
+        listCreate(response["Countries"], "listRecover", "TotalRecovered", "NewRecovered", "lineRecover", sortingNumberRecover)
+        createSelect(response["Countries"])
+    })
+    .catch(error => {
+        console.log(error)
+    })
+}
+
+
+//async func
 
 function parseTime(){
     let today = new Date();

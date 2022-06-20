@@ -25,6 +25,7 @@ header{
     height: 30px;
     font-weight: bold;
     font-size: 17px;
+    cursor: pointer;
 }
 
 #infoSite{
@@ -40,6 +41,7 @@ header{
     font-size: 25px;
     border: none;
     font-weight: bolder;
+    cursor: pointer;
 }
 
 .dropdown {
@@ -54,6 +56,7 @@ header{
     z-index: 1;
     width: 180px;
     font-size: 20px;
+    cursor: pointer;
 }
 
 .dropdown-content div{
@@ -154,7 +157,7 @@ article #totalDate{
 #changeDate{
     border-radius: 5px;
     padding: 10px;
-    font-size: 22px;
+    font-size: 23px;
 }
 
 
@@ -166,6 +169,7 @@ article #totalDate{
     background: white;
     color: black;
     font-weight: bolder;
+    cursor: pointer;
 }
 
 .button:hover, .buttonSort:hover{
@@ -204,6 +208,49 @@ article #totalDate{
     font-size: 18px;
 }
 
+.graphic{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.graphic div{
+    margin: 20px;
+    font-size: 20px;
+}
+
+.changeOption{
+    margin: 10px;
+    font-size: 18px;
+    font-family: fantasy;
+    cursor: pointer;
+    padding: 5px;
+}
+
+#graphCountry{
+    display: none;
+}
+
+#mapSection{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+#mapTitle{
+    font-size: 20px;
+    margin: 17px;
+}
+
+#mapVirus { 
+    height: 450px;
+    width: 512px;
+    top: 0; 
+    right: 0; 
+    bottom: 0; 
+    left: 0;
+}
 
 footer{
     margin: 10px 0 0 0;

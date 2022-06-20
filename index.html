@@ -2,6 +2,9 @@
 <head>
     <title>Dashboard Virus</title>
     <link rel="stylesheet" href="src/style/style.css">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.8.0/dist/leaflet.css" integrity="sha512-hoalWLoI8r4UszCkZ5kL8vayOGVae1oxXe/2A4AO6J9+580uKHDO3JdHb7NzwwzK5xr/Fs0W40kiNHxM9vyTtQ==" crossorigin="" />
+    <script src="https://unpkg.com/leaflet@1.8.0/dist/leaflet.js" integrity="sha512-BB3hKbKWOc9Ez/TAwyWxNXeoV9c1v6FIeYiBieIWkpLjauysF18NzgR1MBNBXf8/KABdlkX68nAhlwcDFLGPCQ==" crossorigin=""></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@3.8.0/dist/chart.min.js"></script>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
 <body id="main" onload="isSaveandWrite()">
@@ -21,17 +24,17 @@
         <div class="dropdown">
             <div class="dropbtn" id="butMenu">&#9776;</div>
             <div class="dropdown-content" id="contentMenu">
-                <div id="changeTheme">Сменить тему</div>
+                <div id="changeTheme">Change the topic</div>
             </div>
           </div>
     </header>
     <article>
         <section id="updateDate" class="conteiner">
-            <div>Время обновления данных</div>
+            <div>Data update time</div>
             <div id="time"></div>
         </section>
         <section>
-            <div class="button" id="changeDate">За последний день</div>
+            <div class="button" id="changeDate">Last day</div>
         </section>
         <section id="totalDate" class="conteiner">
             <div>
@@ -65,16 +68,26 @@
                 </div>
             </div>
         </section>
-        <section>
-            <div id="interMap"></div>
-            <div id="graphVirus">
-                <h1 style="color:white; text-align:center">Graphic COVID-19</h1>
-                <canvas id="myChart" width="800px" height="400px"></canvas>
+        <section id="graphVirus" class="conteiner">
+            <div class="graphic">
+                <div>Graphic Global</div>
+                <canvas id="graphGlobal" width="800px" height="400px"></canvas>
             </div>
+            <div class="graphic">
+                <div>Graphic Country</div>
+                <select class="changeOption" id="selectCountry">
+                    <option disabled selected>Change country</option>
+                </select>
+                <canvas id="graphCountry" width="800px" height="400px"></canvas>
+            </div>
+        </section>
+        <section id="mapSection" class="conteiner">
+            <div id="mapTitle">Interactive Map</div>
+            <div id="mapVirus"></div>
         </section>
     </article>
     <footer id="foot">
-        <div>© Отчик Владислав</div>
+        <div>© Otchik Vladzislav</div>
         <div class="line">
             <div id="day"></div>
             <div>.</div>
@@ -84,8 +97,8 @@
         </div>
         <div>Version 0.0.1</div>
     </footer>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js@3.8.0/dist/chart.min.js"></script>
     <script src="src/js/logic.js"></script>
     <script src="src/js/graphic.js"></script>
+    <script src="src/js/map.js"></script>
 </body>
 </html>
