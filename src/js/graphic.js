@@ -1,4 +1,5 @@
 let countryChart = null;
+let totalChart = null;
 
 function drawGraphic(elemOne, elemTwo, elemThree, time) {
     return {
@@ -9,25 +10,25 @@ function drawGraphic(elemOne, elemTwo, elemThree, time) {
                 {
                     label: 'Recover',
                     data: elemThree,
-                    backgroundColor: 'rgba(0, 255, 0, 1)',
+                    /*backgroundColor: 'rgba(0, 255, 0, 1)',*/
                     borderColor: 'rgba(0, 255, 0, 1)',
-                    borderWidth: 3,
+                    borderWidth: 1,
                     fill: true
                 },
                 {
                     label: 'Death',
                     data: elemTwo,
-                    backgroundColor: 'rgba(255, 0, 0, 1)',
+                    /*backgroundColor: 'rgba(255, 0, 0, 1)',*/
                     borderColor: 'rgba(255, 0, 0, 1)',
-                    borderWidth: 3,
+                    borderWidth: 1,
                     fill: true
                 },
                 {
                     label: 'Confirmed',
                     data: elemOne,
-                    backgroundColor: 'rgba(255, 159, 64, 1)',
+                    /*backgroundColor: 'rgba(255, 159, 64, 1)',*/
                     borderColor: 'rgba(255, 159, 64, 1)',
-                    borderWidth: 3,
+                    borderWidth: 1,
                     fill: true
                     
                 }
@@ -50,7 +51,10 @@ function drawGraphic(elemOne, elemTwo, elemThree, time) {
 
 
 function graphicAllDraw(div, elemOne, elemTwo, elemThree, time) {
-    return new Chart(document.getElementById(div), drawGraphic(elemOne, elemTwo, elemThree, time))
+    if(totalChart != null){
+        totalChart.destroy()
+    }
+    totalChart = new Chart(document.getElementById(div), drawGraphic(elemOne, elemTwo, elemThree, time))
 }
 
 function graphicCountryDraw(div, elemOne, elemTwo, elemThree, time) {

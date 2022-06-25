@@ -1,5 +1,6 @@
 function drawMap(elements) {
     let map = L.map('mapVirus').setView([0, 0], 1);
+    map.zoomControl.setPosition('topright')
     let geoJson = {
         type: 'FeatureCollection',
         features: elements.map((country = {}) => {
@@ -8,17 +9,16 @@ function drawMap(elements) {
             return {
                 type: 'Feature',
                 properties: {
-                ...country,
+                    ...country,
                 },
                 geometry: {
-                type: 'Point',
-                coordinates: [ lng, lat ]
+                    type: 'Point',
+                    coordinates: [ lng, lat ]
                 }
             }
         })
     }
     L.tileLayer('https://api.maptiler.com/maps/toner/{z}/{x}/{y}@2x.png?key=lF8Ri61NL9oYuqPvbVE4',{
-        size: 512,
         minZoom: 1
     }).addTo(map);
 
@@ -62,4 +62,12 @@ function drawMap(elements) {
         }
     });
     geoJsonLayers.addTo(map)
+    let rect = new L.LatLngBounds(
+        new L.LatLng(85, -180),  
+        new L.LatLng(-85, 180)
+      );
+      
+    map.setMinZoom(map.getBoundsZoom(rect, true));
+    map.fitBounds(rect); 
+    map.setMaxBounds(rect);
 }

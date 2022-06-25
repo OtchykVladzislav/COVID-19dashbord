@@ -110,6 +110,7 @@ article{
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    min-height: calc(100vh - 90px)
 
 }
 
@@ -141,7 +142,7 @@ article section .blockTotal{
     color: white;
 }
 
-article #totalDate{
+article #totalDate,#dataPerOneMill{
     display: flex;
     flex-direction: row;
     justify-content: space-between;
@@ -160,6 +161,11 @@ article #totalDate{
     font-size: 23px;
 }
 
+#themeIcon{
+    font-size: 30px;
+    font-weight: bold;
+}
+
 
 .buttonSort, .button{
     margin: 10px;
@@ -172,7 +178,7 @@ article #totalDate{
     cursor: pointer;
 }
 
-.button:hover, .buttonSort:hover{
+.button:hover, .buttonSort:hover, #butCaO:hover{
     background: black;
     color: white;
 }
@@ -191,7 +197,8 @@ article #totalDate{
 }
 
 
-#totalConfirmed, #totalDeath, #totalRecover{
+#totalConfirmed, #totalDeath, #totalRecover, 
+#confirmedPerOneMill,#deathPerOneMill,#recoverPerOneMill{
     color: red;
 }
 
@@ -200,7 +207,8 @@ article #totalDate{
     color: red;
 }
 
-.lineConfirmed,.lineDeath,.lineRecover{
+.lineConfirmed,.lineDeath,.lineRecover,
+.lineConfirmedPerOneMill,.lineDeathPerOneMill,.lineRecoverPerOneMill{
     display: flex;
     flex-direction: row;
     justify-content: space-between;
@@ -208,10 +216,28 @@ article #totalDate{
     font-size: 18px;
 }
 
+#changeTime{
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+}
+
+#changeTime label, input{
+    margin: 5px;
+}
+
+#changeTime input{
+    font-size: 18px;
+    font-family: fantasy;
+    cursor: pointer;
+    padding: 5px;
+}
+
 .graphic{
     display: flex;
     flex-direction: column;
     align-items: center;
+    text-align: center;
 }
 
 .graphic div{
@@ -243,15 +269,33 @@ article #totalDate{
     margin: 17px;
 }
 
-#mapVirus { 
+#mapVirus {
+    position: fixed;
     height: 450px;
-    width: 600px;
+    width: 900px;
     top: 0; 
     right: 0; 
     bottom: 0; 
     left: 0;
     border: 2px solid red;
+    position: relative;
 }
+
+#butCaO{
+    position: absolute;
+    left: 0;
+    top: 0;
+    font-size: 22px;
+    cursor: pointer;
+    margin: 10px;
+    border: 2px solid red;
+    background: white;
+    color: black;
+    font-weight: bolder;
+    padding: 0 7px 0 7px;
+    z-index: 1000;
+}
+
 
 /*Map marker*/
 .icon-marker {
@@ -325,7 +369,6 @@ ul {
 
 
 footer{
-    margin: 10px 0 0 0;
     display: flex;
     flex-direction: row;
     justify-content: space-around;
@@ -334,6 +377,8 @@ footer{
     flex-wrap: wrap;
     background: white;
     padding: 20px;
+    height: 70px;
+    margin-top: 20px;
 }
 
 /*Тема*/

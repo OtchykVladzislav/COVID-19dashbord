@@ -1,11 +1,19 @@
-var sortingNumberDeath = 0;
-var sortingNumberConfrimed = 0;
-var sortingNumberRecover = 0; 
+let sortingNumberDeath = 0;
+let sortingNumberConfrimed = 0;
+let sortingNumberRecover = 0;
+let sortingNumberDeathPerMillion = 0;
+let sortingNumberConfrimedPerMillion = 0;
+let sortingNumberRecoverPerMillion = 0;  
 var dataAll;
-var changeDate = 0;
-var countryName;
+var dataToday;
+let changeDate = 0;
+let month;
+let year;
+let day;
   
 function isSaveandWrite(){
+    parseDate()
+    checkDate()
     saveDate()
     saveGlobalData()
     saveDataMap()
@@ -25,6 +33,18 @@ document.getElementById("changeTheme").addEventListener("click", () => {
     document.getElementById("mapSection").classList.toggle("dateTheme")
     document.getElementById("butMenu").classList.toggle("buttonTheme")
     document.getElementById("contentMenu").classList.toggle("contMenu")
+    document.getElementById("changeTheme").innerHTML = 'Theme(<span id="themeIcon">&#9790;</span>)'
+})
+
+document.getElementById("butCaO").addEventListener("click", (e) => {
+    let elem = document.getElementById("mapVirus")
+    if (!document.fullscreenElement) {
+        elem.requestFullscreen()
+        e.target.innerHTML = "&#10539;"
+    } else {
+        document.exitFullscreen();
+        e.target.innerHTML = "&#10530;"
+    }
 })
 
 document.getElementById("butConf").addEventListener("click", () => {
@@ -42,9 +62,25 @@ document.getElementById("butRec").addEventListener("click", () => {
     listCreate(dataAll, "listRecover", "recovered", "todayRecovered", "lineRecover", sortingNumberRecover)
 })
 
+document.getElementById("butConfPerOneMill").addEventListener("click", () => {
+    sortingNumberConfrimedPerMillion === 0 ? sortingNumberConfrimedPerMillion = 1 : sortingNumberConfrimedPerMillion = 0
+    listCreate(dataAll, "listConfirmedPerOneMill", "casesPerOneMillion", "casesPerOneMillion", "lineConfirmedPerOneMill", sortingNumberConfrimedPerMillion)
+})
+
+document.getElementById("butDeathPerOneMill").addEventListener("click", () => {
+    sortingNumberDeathPerMillion === 0 ? sortingNumberDeathPerMillion = 1 : sortingNumberDeathPerMillion = 0
+    listCreate(dataAll, "listDeathPerOneMill", "deathsPerOneMillion", "deathsPerOneMillion", "lineDeathPerOneMill", sortingNumberDeathPerMillion)
+})
+
+document.getElementById("butRecPerOneMill").addEventListener("click", () => {
+    sortingNumberRecoverPerMillion === 0 ? sortingNumberRecoverPerMillion = 1 : sortingNumberRecoverPerMillion = 0
+    listCreate(dataAll, "listRecoverPerOneMill", "recoveredPerOneMillion", "recoveredPerOneMillion", "lineRecoverPerOneMill", sortingNumberRecoverPerMillion)
+})
+
 document.getElementById("changeDate").addEventListener("click", (e) => {
     changeDate === 0 ? changeDate = 1 : changeDate = 0
     changeDate === 0 ? e.target.innerHTML = "Last day" : e.target.innerHTML = "All time"
+    textResult(dataToday)
     listCreate(dataAll, "listConfirmed", "cases", "todayCases", "lineConfirmed", sortingNumberConfrimed)
     listCreate(dataAll, "listDeath", "deaths", "todayDeaths", "lineDeath", sortingNumberDeath)
     listCreate(dataAll, "listRecover", "recovered", "todayRecovered", "lineRecover", sortingNumberRecover)
@@ -54,15 +90,37 @@ document.getElementById("search").addEventListener("input", (e) => {
     listCreate(nameSearch(e.target.value), "listConfirmed", "cases", "todayCases", "lineConfirmed", sortingNumberConfrimed)
     listCreate(nameSearch(e.target.value), "listDeath", "deaths", "todayDeaths", "lineDeath", sortingNumberDeath)
     listCreate(nameSearch(e.target.value), "listRecover", "recovered", "todayRecovered", "lineRecover", sortingNumberRecover)
+    listCreate(nameSearch(e.target.value), "listConfirmedPerOneMill", "casesPerOneMillion", "casesPerOneMillion", "lineConfirmedPerOneMill", sortingNumberConfrimedPerMillion)
+    listCreate(nameSearch(e.target.value), "listDeathPerOneMill", "deathsPerOneMillion", "deathsPerOneMillion", "lineDeathPerOneMill", sortingNumberDeathPerMillion)
+    listCreate(nameSearch(e.target.value), "listRecoverPerOneMill", "recoveredPerOneMillion", "recoveredPerOneMillion", "lineRecoverPerOneMill", sortingNumberRecoverPerMillion)
 })
 
 document.getElementById("selectCountry").addEventListener("change", (e) => {
-    saveCountryData(e.target.value)
-    document.getElementById("graphCountry").style.display = "none"
+    saveCountryData(e.target.value, document.getElementById("fromDate").value, document.getElementById("toDate").value)
+    document.getElementById("graphCountry").style.display = "flex"
+})
+
+document.getElementById("fromDate").addEventListener("change", (e) => {
+    saveCountryData(document.getElementById("selectCountry").value, e.target.value, document.getElementById("toDate").value)
+    document.getElementById("graphCountry").style.display = "flex"
+})
+
+document.getElementById("toDate").addEventListener("change", (e) => {
+    saveCountryData(document.getElementById("selectCountry").value, document.getElementById("fromDate").value, e.target.value)
     document.getElementById("graphCountry").style.display = "flex"
 })
 
 // Main logic
+
+function parseDate(){
+    let today = new Date();
+    day = today.getDay()
+    month = today.getMonth()
+    year = today.getFullYear()
+    document.getElementById("day").innerText = String(day).padStart(2, '0')
+    document.getElementById("month").innerText = String(month).padStart(2, '0')
+    document.getElementById("year").innerText = year
+}
 
 function nameSearch(elements){
     return dataAll.filter(item => item["country"].toLowerCase().includes(elements.toLowerCase()))
@@ -81,6 +139,15 @@ function converterNumbers(string){
 }
 
 //Create Block
+
+function checkDate() {
+    let fromDate = document.getElementById("fromDate")
+    let toDate = document.getElementById("toDate")
+    fromDate.value = `${year}-${String(month).padStart(2, '0')}-01`;
+    toDate.value = `${year}-${String(month).padStart(2, '0')}-28`;
+    fromDate.max = `${year}-${String(month).padStart(2, '0')}-28`
+    toDate.max = `${year}-${String(month).padStart(2, '0')}-28`
+}
 
 function listCreate(elements, div, total, totalDay, line, param){
     let listBlock = document.getElementById(div)
@@ -116,10 +183,17 @@ function convertArray(array, name, str){
 }
 
 
-function textResult(a,b,c){
-    document.getElementById("totalConfirmed").innerText = converterNumbers(a)
-    document.getElementById("totalDeath").innerText = converterNumbers(b)
-    document.getElementById("totalRecover").innerText = converterNumbers(c)
+function textResult(text){
+    if(changeDate === 0){
+        document.getElementById("totalConfirmed").innerText = converterNumbers(text["cases"])
+        document.getElementById("totalDeath").innerText = converterNumbers(text["deaths"])
+        document.getElementById("totalRecover").innerText = converterNumbers(text["recovered"])
+    }
+    else{
+        document.getElementById("totalConfirmed").innerText = converterNumbers(text["todayCases"])
+        document.getElementById("totalDeath").innerText = converterNumbers(text["todayDeaths"])
+        document.getElementById("totalRecover").innerText = converterNumbers(text["todayRecovered"])
+    }
 }
 
 function createSelect(arr){
@@ -139,7 +213,9 @@ function createOption(div, name, value) {
 //fetch func
 
 function saveGlobalData(){
-    fetch("https://api.covid19api.com/world?from=2022-05-01T00:00:00Z&to=2022-06-01T00:00:00Z")
+    console.log(year)
+    console.log(month)
+    fetch(`https://api.covid19api.com/world?from=${year}-${month}-01T00:00:00Z&to=${year}-${month+1}-01T00:00:00Z`)
     .then(response => response.json())
     .then(response => {
         let dateTotal = sortGrowth(response, "TotalConfirmed")
@@ -154,8 +230,8 @@ function saveGlobalData(){
     })
 }
 
-function saveCountryData(address){
-    fetch(`https://api.covid19api.com/total/country/${address}?from=2022-05-01T00:00:00Z&to=2022-06-01T00:00:00Z`)
+function saveCountryData(address, from, to){
+    fetch(`https://api.covid19api.com/total/country/${address}?from=${from}T00:00:00Z&to=${to}T12:00:00Z`)
     .then(response => response.json())
     .then(response => {
         let time = convertArray(response, "Date", "time")
@@ -186,7 +262,8 @@ function saveDataTotal() {
     fetch("https://disease.sh/v3/covid-19/all")
     .then(response => response.json())
     .then(response => {
-        textResult(response["cases"],response["deaths"],response["recovered"])
+        dataToday = response
+        textResult(response)
     })
     .catch(error => {
         console.log(error)
@@ -201,6 +278,9 @@ function saveDataMap(){
         listCreate(response, "listConfirmed", "cases", "todayCases", "lineConfirmed", sortingNumberConfrimed)
         listCreate(response, "listDeath", "deaths", "todayDeaths", "lineDeath", sortingNumberDeath)
         listCreate(response, "listRecover", "recovered", "todayRecovered", "lineRecover", sortingNumberRecover)
+        listCreate(response, "listConfirmedPerOneMill", "casesPerOneMillion", "casesPerOneMillion", "lineConfirmedPerOneMill", sortingNumberConfrimedPerMillion)
+        listCreate(response, "listDeathPerOneMill", "deathsPerOneMillion", "deathsPerOneMillion", "lineDeathPerOneMill", sortingNumberDeathPerMillion)
+        listCreate(response, "listRecoverPerOneMill", "recoveredPerOneMillion", "recoveredPerOneMillion", "lineRecoverPerOneMill", sortingNumberRecoverPerMillion)
         drawMap(response)
     })
     .catch(error => {
@@ -211,23 +291,18 @@ function saveDataMap(){
 
 //async func
 
-function parseTime(){
+function logicClock(){
     let today = new Date();
-    let hour = String(today.getHours());
-    let minutes = String(today.getMinutes());
-    let seconds = String(today.getSeconds());
-    let date = String(today.getDay())
-    let month = String(today.getMonth())
-    let year = String(today.getFullYear())
+    let hour = String(today.getHours()).padStart(2, '0');
+    let minutes = String(today.getMinutes()).padStart(2, '0');
+    let seconds = String(today.getSeconds()).padStart(2, '0');
 
-    hour < 10 ? document.getElementById("hour").innerText = "0" + hour : document.getElementById("hour").innerText = hour
-    minutes < 10 ? document.getElementById("min").innerText = "0" + minutes : document.getElementById("min").innerText = minutes
-    seconds < 10 ? document.getElementById("sec").innerText = "0" + seconds : document.getElementById("sec").innerText = seconds
-
-    date < 10 ? document.getElementById("day").innerText = "0" + date : document.getElementById("day").innerText = date
-    month < 10 ? document.getElementById("month").innerText = "0" + month : document.getElementById("month").innerText = month 
-    document.getElementById("year").innerText = year
-
+    document.getElementById("hour").innerText = hour
+    document.getElementById("min").innerText = minutes
+    document.getElementById("sec").innerText = seconds
 }
 
-setInterval(parseTime, 10)
+setInterval(() =>{
+    logicClock()
+    document.getElementById("toDate").min = document.getElementById("fromDate").value
+}, 10)
