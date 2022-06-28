@@ -29,6 +29,7 @@ document.getElementById("changeTheme").addEventListener("click", () => {
     document.getElementById("logo").classList.toggle("imageTheme")
     document.getElementById("updateDate").classList.toggle("dateTheme")
     document.getElementById("totalDate").classList.toggle("dateTheme")
+    document.getElementById("dataPerOneMill").classList.toggle("dateTheme")
     document.getElementById("graphVirus").classList.toggle("dateTheme")
     document.getElementById("mapSection").classList.toggle("dateTheme")
     document.getElementById("butMenu").classList.toggle("buttonTheme")

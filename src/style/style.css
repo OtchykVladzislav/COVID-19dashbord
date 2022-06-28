@@ -145,7 +145,7 @@ article section .blockTotal{
 article #totalDate,#dataPerOneMill{
     display: flex;
     flex-direction: row;
-    justify-content: space-between;
+    justify-content: space-evenly;
     flex-wrap: wrap;
 }
 
