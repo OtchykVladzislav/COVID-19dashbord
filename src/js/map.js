@@ -66,6 +66,8 @@ function drawMap(elements) {
         new L.LatLng(85, -180),  
         new L.LatLng(-85, 180)
       );
+
+    L.Control.geocoder().addTo(map);
       
     map.setMinZoom(map.getBoundsZoom(rect, true));
     map.fitBounds(rect); 
